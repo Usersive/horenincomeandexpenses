@@ -1,0 +1,45 @@
+
+
+{% comment %} {% if messages %}
+    {% for message in messages %}
+    <div id="message" class="confirm_password">
+    <div {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %} role="alert">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error: {% endif %}
+        {{ message }}
+    </div>
+    </div>
+    {% endfor %}
+
+{% endif %}
+
+<script>
+    setTimeout(function(){
+        $('#message').fadeOut('slow')
+      }, 4000)
+</script> {% endcomment %}
+
+{% if messages %}
+    {% for message in messages %}
+    <div id="message" class="confirm_password">
+    <div {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %} role="alert">
+    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error: {% endif %}
+        {{ message }}
+    </div>
+    </div>
+    {% endfor %}
+{% endif %}
+
+<script>
+    // Set the duration in minutes (for example, 2 minutes)
+    var durationInMinutes = 2;
+
+    // Convert the duration to milliseconds
+    var durationInMilliseconds = durationInMinutes * 60000;
+
+    // Set a timeout to hide the message after the specified duration
+    setTimeout(function(){
+        $('#message').fadeOut('slow');
+    }, durationInMilliseconds);
+</script>

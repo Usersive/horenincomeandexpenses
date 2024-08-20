@@ -1,0 +1,128 @@
+
+{% extends 'base.html'%}
+{% load static%}
+{% block content %}
+
+
+<div class="midde_cont">
+  <div class="container-fluid">
+     <div class="row column_title">
+        <div class="col-md-12">
+           <div class="page_title">
+              <h2 class="text-muted">DASHBOARD</h2>
+           </div>
+        </div>
+     </div>
+     {% include 'includes/message.html' %}
+     <!-- row -->
+     <div class="row column1">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+           <div class="white_shd full margin_bottom_30">
+              <div class="full graph_head">
+                 <div class="heading1 margin_0">
+                    <h2>User Profile</h2>
+                 </div>
+              </div>
+              <div class="full price_table padding_infor_info">
+                 <div class="row">
+                    <!-- user profile section --> 
+                    <!-- profile image -->
+                    <div class="col-lg-12">
+                       <div class="full dis_flex center_text">
+                          <div class="profile_img"><img width="180" height="180" class="rounded-circle" src="{{user.profile.profile_image.url}}" alt="#" />
+                           
+                            <div class="user_info text-center">
+                              <p><span class="online_animation"> </span> Online: <span class="text-muted "> {{user.username}}</span></p>
+                              <hr>
+                           </div>
+
+                           <div>
+                              <img src="{{ barcode_url }}" alt="" height="40" width="180">
+                          </div>
+                          <hr>
+                        </div>
+                          
+                          <div class="profile_contant">
+                           <div class="card-body">                           
+               
+                             <form action="{%url 'index'%}" method="POST" enctype="multipart/form-data">
+                              {% csrf_token %}
+                              <div class="form-row">
+                                  <div class="form-group col-12">
+                                       <label >Full Name</label>  
+                                       <input class="form-control" name="name" type="text" value="{{user.profile.name}}" disabled/> 
+                                  </div>  
+                              </div>
+                              <div class="form-row">
+                                 <div class="form-group col-12">
+                                    <label >Username</label> 
+                                    <input class="form-control" name="username" type="text" value="{{user.username}}" / disabled>
+                                 </div>
+                                 
+                              </div>
+                              <div class="form-row">
+                                 <div class="form-group col-12">
+                                      <label >Email Address</label> 
+                                      <input class="form-control" name="email" type="email" value="{{user.email}}"  disabled/> 
+                                 </div>
+                              </div>
+                              <div class="form-row">
+                                 <div class="form-group col-12">
+                                      <label >Permanent Address</label> 
+                                      <input class="form-control"name="address" type="text" value="{{user.profile.address}}"  disabled /> 
+                                 </div>
+                              </div>
+                              <div class="form-row">
+                                 <div class="form-group col-6">
+                                      <label >Phone Number</label> 
+                                      <input class="form-control" name="phone_number" type="text" value="{{user.profile.phone_number}}"  disabled /> 
+                                 </div>
+                                 <div class="form-group col-6">
+                                    <label>Gender Selected</label> 
+                                    <input class="form-control" name="gender" type="text" value="{{user.profile.gender}}" disabled /> 
+                                 </div>
+                              </div>
+                          </form> 
+                         
+                      </div> <!-- row.// -->
+                      <hr>
+                  </div> 
+               </div>
+
+               <!-- profile contant section -->
+               <div class="full inner_elements margin_top_30">
+                  <div class="tab_style2">
+                     <div class="tabbar">
+                        <nav>
+                           <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                              <a class="nav-item nav-link active" id="nav-profile-tab" data-toggle="tab" href="#project_worked" role="tab" aria-selected="false">Profile Details </a>
+                              <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#profile_section" role="tab" aria-selected="false">About Us</a>
+                           </div>
+                        </nav>
+                        <div class="tab-content" id="nav-tabContent">
+                           
+                           <div class="tab-pane fade show active" id="project_worked" role="tabpanel" aria-labelledby="nav-profile-tab">
+                              <p>{{user.profile.profile_details}}</p>
+                           </div>
+                           <div class="tab-pane fade" id="profile_section" role="tabpanel" aria-labelledby="nav-contact-tab">
+                              {%for about in about_company%}
+                              <p class="text-muted py-1">{{about.about_us}}</p>
+                              {%endfor%}
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <!-- end user profile section -->
+                  </div>
+                    </div>
+                 </div>
+              </div>
+           </div>
+           <div class="col-md-2"></div>
+        </div>
+        <!-- end row -->
+     </div>
+{% endblock %}
+       

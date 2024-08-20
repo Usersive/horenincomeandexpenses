@@ -1,0 +1,38 @@
+
+#header {
+  
+    background: rgba(5, 108, 67, 0.8);
+    color: #ffff;
+}
+
+#branding h1 {
+    color: #ffff;
+}
+
+div.breadcrumbs {
+    background: #04623b;;
+    padding: 10px 40px;
+    border: none;
+    color: var(--breadcrumbs-fg);
+    text-align: left;
+}
+
+.login .submit-row {
+    padding: 0px !important;
+    margin: 0;
+    
+}
+
+#container > .main {
+    display: flex;
+    flex: 1 0 auto;
+    background: rgba(32, 34, 36, 0.8);
+}
+
+.module h2, .module caption, .inline-group h2 {
+    background: #023f23;
+}
+
+.dashboard #content {
+    width: 1200px;
+}

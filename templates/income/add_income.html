@@ -1,0 +1,63 @@
+{% extends 'base.html'%}
+{% load static%}
+{% block content %}
+
+
+
+<div class="midde_cont">
+    <div class="container-fluid">
+       <div class="row column_title">
+          <div class="col-md-12">
+             <div class="page_title">
+                <h2 class="text-muted">ADD INCOME</h2>
+             </div>
+          </div>
+       </div>
+
+
+        <div class="container mt-5">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{%url 'add_income'%}">Income</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Add Inomex</li>
+                </ol>
+        </nav>
+
+{%include 'includes/message.html'%}
+<form action="{%url 'add_income'%}" method="POST">
+    {% csrf_token %}
+    <div class="card">
+        <div class="card-body">
+            <div class="form-group">
+                <label>Amount</label>
+                <input type="number" class="form-control form-control-sm" name="amount" value="{{value.amount}}">
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <input type="text" class="form-control form-control-sm" name="description" value="{{value.description}}">
+            </div>
+            <div class="form-group">
+                <label>Source</label>
+
+                <select class="form-control" name="source">
+                    
+                    {%for source in sources%} 
+                    <option name="source" value="{{source.name}}">{{source.name}}</option>
+                    {%endfor%}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Date of Income</label>
+                <input type="date" class="form-control -sm" name="income_date" required>
+            </div>
+            <input class="btn btn-primary btn-primary-sm" type="submit" value="Submit">
+        </div>
+    </div>
+
+</form>
+
+</div>
+
+
+{% endblock %}
+

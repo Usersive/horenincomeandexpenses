@@ -1,0 +1,320 @@
+{% extends 'base.html'%}
+{% load static%}
+{% block content %}
+
+
+
+
+<div class="midde_cont">
+    <div class="container-fluid">
+        <div class="row column_title">
+            <div class="col-md-12">
+                <div class="page_title">
+                    <h2 class="text-muted">EXPENSES SUMMARY </h2>
+                </div>
+            </div>
+        </div>
+        {% include 'includes/message.html' %}
+        <div class="row column1">
+            <div class="col-lg-6">
+                <div class="white_shd full margin_bottom_30">
+                    <div class="full graph_head">
+                        <div class="heading1 margin_0">
+                            <h2>Bar Chart of Expenses</h2>
+                        </div>
+                    </div>
+                    <div class="map_section padding_infor_info">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                 </div>
+                </div>
+
+            <div class="col-lg-6">
+               <div class="white_shd full margin_bottom_30">
+                   <div class="full graph_head">
+                       <div class="heading1 margin_0">
+                           <h2>Line Chart of Expenses</h2>
+                       </div>
+                   </div>
+                   <div class="map_section padding_infor_info">
+                       <canvas id="lineChart"></canvas>
+                   </div>
+                </div>
+               </div>
+
+               <div class="col-lg-6">
+                <div class="white_shd full margin_bottom_30">
+                    <div class="full graph_head">
+                        <div class="heading1 margin_0">
+                            <h2>Pie Chart of Expenses</h2>
+                        </div>
+                    </div>
+                    <div class="map_section padding_infor_info">
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                 </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="white_shd full margin_bottom_30">
+                      <div class="full graph_head">
+                          <div class="heading1 margin_0">
+                              <h2>Pie Chart of Expenses</h2>
+                          </div>
+                      </div>
+                      <div class="map_section padding_infor_info">
+                          <canvas id="doughnutChart"></canvas>
+                      </div>
+                   </div>
+                  </div>
+ 
+
+
+           </div>
+        </div>
+    </div>
+   </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+   const renderChart = (data, labels) => {
+      var ctx = document.getElementById("myChart").getContext("2d");
+      var myChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Expenses",
+              data: data,
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(255, 206, 86, 0.2)",
+                "rgba(75, 192, 192, 0.2)",
+                "rgba(153, 102, 255, 0.2)",
+                "rgba(255, 159, 64, 0.2)",
+              ],
+              borderColor: [
+                "rgba(255, 99, 132, 1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+                "rgba(75, 192, 192, 1)",
+                "rgba(153, 102, 255, 1)",
+                "rgba(255, 159, 64, 1)",
+              ],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          title: {
+            display: true,
+            text: "Expenses Per Category",
+          },
+        },
+      });
+    };
+    
+    const getChartData = () => {
+      console.log("fetching");
+      fetch("/expense_category_summary")
+        .then((res) => res.json())
+        .then((results) => {
+          console.log("results", results);
+          const category_data = results.expense_category_data;
+          const [labels, data] = [
+            Object.keys(category_data),
+            Object.values(category_data),
+          ];
+    
+          renderChart(data, labels);
+        });
+    };
+    
+    document.onload = getChartData();
+</script>
+
+<script>
+   const renderChartline = (data, labels) => {
+      var ctxl = document.getElementById("lineChart").getContext("2d");
+      var lineChart = new Chart(ctxl, {
+        type: "line",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Expenses",
+              data: data,
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(255, 206, 86, 0.2)",
+                "rgba(75, 192, 192, 0.2)",
+                "rgba(153, 102, 255, 0.2)",
+                "rgba(255, 159, 64, 0.2)",
+              ],
+              borderColor: [
+                "rgba(255, 99, 132, 1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+                "rgba(75, 192, 192, 1)",
+                "rgba(153, 102, 255, 1)",
+                "rgba(255, 159, 64, 1)",
+              ],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          title: {
+            display: true,
+            text: "Expenses Per Category",
+          },
+        },
+      });
+    };
+    
+    const getChartDataline = () => {
+      console.log("fetching");
+      fetch("/expense_category_summary")
+        .then((res) => res.json())
+        .then((results) => {
+          console.log("results", results);
+          const category_data = results.expense_category_data;
+          const [labels, data] = [
+            Object.keys(category_data),
+            Object.values(category_data),
+          ];
+    
+          renderChartline(data, labels);
+        });
+    };
+    
+    document.onload = getChartDataline();
+</script>
+
+
+<script>
+  const renderChartpie = (data, labels) => {
+     var ctxp = document.getElementById("pieChart").getContext("2d");
+     var pieChart = new Chart(ctxp, {
+       type: "pie",
+       data: {
+         labels: labels,
+         datasets: [
+           {
+             label: "Expenses",
+             data: data,
+             backgroundColor: [
+               "rgba(255, 99, 132, 0.2)",
+               "rgba(54, 162, 235, 0.2)",
+               "rgba(255, 206, 86, 0.2)",
+               "rgba(75, 192, 192, 0.2)",
+               "rgba(153, 102, 255, 0.2)",
+               "rgba(255, 159, 64, 0.2)",
+             ],
+             borderColor: [
+               "rgba(255, 99, 132, 1)",
+               "rgba(54, 162, 235, 1)",
+               "rgba(255, 206, 86, 1)",
+               "rgba(75, 192, 192, 1)",
+               "rgba(153, 102, 255, 1)",
+               "rgba(255, 159, 64, 1)",
+             ],
+             borderWidth: 1,
+           },
+         ],
+       },
+       options: {
+         title: {
+           display: true,
+           text: "Expenses Per Category",
+         },
+       },
+     });
+   };
+   
+   const getChartDatapie = () => {
+     console.log("fetching");
+     fetch("/expense_category_summary")
+       .then((res) => res.json())
+       .then((results) => {
+         console.log("results", results);
+         const category_data = results.expense_category_data;
+         const [labels, data] = [
+           Object.keys(category_data),
+           Object.values(category_data),
+         ];
+   
+         renderChartpie(data, labels);
+       });
+   };
+   
+   document.onload = getChartDatapie();
+</script>
+
+<script>
+  const renderChartdoughnut = (data, labels) => {
+     var ctxd = document.getElementById("doughnutChart").getContext("2d");
+     var doughnutChart = new Chart(ctxd, {
+       type: "doughnut",
+       data: {
+         labels: labels,
+         datasets: [
+           {
+             label: "Expenses",
+             data: data,
+             backgroundColor: [
+               "rgba(255, 99, 132, 0.2)",
+               "rgba(54, 162, 235, 0.2)",
+               "rgba(255, 206, 86, 0.2)",
+               "rgba(75, 192, 192, 0.2)",
+               "rgba(153, 102, 255, 0.2)",
+               "rgba(255, 159, 64, 0.2)",
+             ],
+             borderColor: [
+               "rgba(255, 99, 132, 1)",
+               "rgba(54, 162, 235, 1)",
+               "rgba(255, 206, 86, 1)",
+               "rgba(75, 192, 192, 1)",
+               "rgba(153, 102, 255, 1)",
+               "rgba(255, 159, 64, 1)",
+             ],
+             borderWidth: 1,
+           },
+         ],
+       },
+       options: {
+         title: {
+           display: true,
+           text: "Expenses Per Category",
+         },
+       },
+     });
+   };
+   
+   const getChartDatadoughnut = () => {
+     console.log("fetching");
+     fetch("/expense_category_summary")
+       .then((res) => res.json())
+       .then((results) => {
+         console.log("results", results);
+         const category_data = results.expense_category_data;
+         const [labels, data] = [
+           Object.keys(category_data),
+           Object.values(category_data),
+         ];
+   
+         renderChartdoughnut(data, labels);
+       });
+   };
+   
+   document.onload = getChartDatadoughnut();
+</script>
+
+{% endblock %}
+
+
+

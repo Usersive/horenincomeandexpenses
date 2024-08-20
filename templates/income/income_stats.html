@@ -1,0 +1,314 @@
+{% extends 'base.html'%}
+{% load static%}
+{% block content %}
+
+<div class="midde_cont">
+    <div class="container-fluid">
+        <div class="row column_title">
+            <div class="col-md-12">
+                <div class="page_title">
+                    <h2 class="text-muted">INCOME SUMMARY </h2>
+                </div>
+            </div>
+        </div>
+        {% include 'includes/message.html' %}
+        <div class="row column1">
+            <div class="col-lg-6">
+                <div class="white_shd full margin_bottom_30">
+                    <div class="full graph_head">
+                        <div class="heading1 margin_0">
+                            <h2>Bar Chart of Income</h2>
+                        </div>
+                    </div>
+                    <div class="map_section padding_infor_info">
+                        <canvas id="incomebarChart"></canvas>
+                    </div>
+                 </div>
+                </div>
+
+            <div class="col-lg-6">
+               <div class="white_shd full margin_bottom_30">
+                   <div class="full graph_head">
+                       <div class="heading1 margin_0">
+                           <h2>Line Chart of Income</h2>
+                       </div>
+                   </div>
+                   <div class="map_section padding_infor_info">
+                       <canvas id="incomelineChart"></canvas>
+                   </div>
+                </div>
+               </div>
+
+               <div class="col-lg-6">
+                <div class="white_shd full margin_bottom_30">
+                    <div class="full graph_head">
+                        <div class="heading1 margin_0">
+                            <h2>Pie Chart of Income</h2>
+                        </div>
+                    </div>
+                    <div class="map_section padding_infor_info">
+                        <canvas id="incomepieChart"></canvas>
+                    </div>
+                 </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="white_shd full margin_bottom_30">
+                      <div class="full graph_head">
+                          <div class="heading1 margin_0">
+                              <h2>Pie Chart of Income</h2>
+                          </div>
+                      </div>
+                      <div class="map_section padding_infor_info">
+                          <canvas id="incomedChart"></canvas>
+                      </div>
+                   </div>
+                  </div>
+           </div>
+        </div>
+    </div>
+   </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const renderChartincomebar = (data, labels) => {
+       var ctxbar = document.getElementById("incomebarChart").getContext("2d");
+       var incomebarChart = new Chart(ctxbar, {
+         type: "bar",
+         data: {
+           labels: labels,
+           datasets: [
+             {
+               label: "Income",
+               data: data,
+               backgroundColor: [
+                 "rgba(255, 99, 132, 0.2)",
+                 "rgba(54, 162, 235, 0.2)",
+                 "rgba(255, 206, 86, 0.2)",
+                 "rgba(75, 192, 192, 0.2)",
+                 "rgba(153, 102, 255, 0.2)",
+                 "rgba(255, 159, 64, 0.2)",
+               ],
+               borderColor: [
+                 "rgba(255, 99, 132, 1)",
+                 "rgba(54, 162, 235, 1)",
+                 "rgba(255, 206, 86, 1)",
+                 "rgba(75, 192, 192, 1)",
+                 "rgba(153, 102, 255, 1)",
+                 "rgba(255, 159, 64, 1)",
+               ],
+               borderWidth: 1,
+             },
+           ],
+         },
+         options: {
+           title: {
+             display: true,
+             text: "Income Per Source",
+           },
+         },
+       });
+     };
+     
+     const getChartDataincomebar = () => {
+       console.log("fetching");
+       fetch("/income_source_summary")
+         .then((res) => res.json())
+         .then((results) => {
+           console.log("results", results);
+           const source_data = results.income_source_data;
+           const [labels, data] = [
+             Object.keys(source_data),
+             Object.values(source_data),
+           ];
+     
+           renderChartincomebar(data, labels);
+         });
+     };
+     
+     document.onload = getChartDataincomebar();
+</script>
+
+<script>
+    const renderChartincomeline = (data, labels) => {
+       var ctxline = document.getElementById("incomelineChart").getContext("2d");
+       var incomelineChart = new Chart(ctxline, {
+         type: "line",
+         data: {
+           labels: labels,
+           datasets: [
+             {
+               label: "Income",
+               data: data,
+               backgroundColor: [
+                 "rgba(255, 99, 132, 0.2)",
+                 "rgba(54, 162, 235, 0.2)",
+                 "rgba(255, 206, 86, 0.2)",
+                 "rgba(75, 192, 192, 0.2)",
+                 "rgba(153, 102, 255, 0.2)",
+                 "rgba(255, 159, 64, 0.2)",
+               ],
+               borderColor: [
+                 "rgba(255, 99, 132, 1)",
+                 "rgba(54, 162, 235, 1)",
+                 "rgba(255, 206, 86, 1)",
+                 "rgba(75, 192, 192, 1)",
+                 "rgba(153, 102, 255, 1)",
+                 "rgba(255, 159, 64, 1)",
+               ],
+               borderWidth: 1,
+             },
+           ],
+         },
+         options: {
+           title: {
+             display: true,
+             text: "Income Per Source",
+           },
+         },
+       });
+     };
+     
+     const getChartDataincomeline = () => {
+       console.log("fetching");
+       fetch("/income_source_summary")
+         .then((res) => res.json())
+         .then((results) => {
+           console.log("results", results);
+           const source_data = results.income_source_data;
+           const [labels, data] = [
+             Object.keys(source_data),
+             Object.values(source_data),
+           ];
+     
+           renderChartincomeline(data, labels);
+         });
+     };
+     
+     document.onload = getChartDataincomeline();
+</script>
+  
+<script>
+    const renderChartincomepie = (data, labels) => {
+       var ctxpie = document.getElementById("incomepieChart").getContext("2d");
+       var incomepieChart = new Chart(ctxpie, {
+         type: "pie",
+         data: {
+           labels: labels,
+           datasets: [
+             {
+               label: "Income",
+               data: data,
+               backgroundColor: [
+                 "rgba(255, 99, 132, 0.2)",
+                 "rgba(54, 162, 235, 0.2)",
+                 "rgba(255, 206, 86, 0.2)",
+                 "rgba(75, 192, 192, 0.2)",
+                 "rgba(153, 102, 255, 0.2)",
+                 "rgba(255, 159, 64, 0.2)",
+               ],
+               borderColor: [
+                 "rgba(255, 99, 132, 1)",
+                 "rgba(54, 162, 235, 1)",
+                 "rgba(255, 206, 86, 1)",
+                 "rgba(75, 192, 192, 1)",
+                 "rgba(153, 102, 255, 1)",
+                 "rgba(255, 159, 64, 1)",
+               ],
+               borderWidth: 1,
+             },
+           ],
+         },
+         options: {
+           title: {
+             display: true,
+             text: "Income Per Source",
+           },
+         },
+       });
+     };
+     
+     const getChartDataincomepie = () => {
+       console.log("fetching");
+       fetch("/income_source_summary")
+         .then((res) => res.json())
+         .then((results) => {
+           console.log("results", results);
+           const source_data = results.income_source_data;
+           const [labels, data] = [
+             Object.keys(source_data),
+             Object.values(source_data),
+           ];
+     
+           renderChartincomepie(data, labels);
+         });
+     };
+     
+     document.onload = getChartDataincomepie();
+</script>
+
+<script>
+  const renderChartincomed = (data, labels) => {
+     var ctxdonut = document.getElementById("incomedChart").getContext("2d");
+     var incomedChart = new Chart(ctxdonut, {
+       type: "doughnut",
+       data: {
+         labels: labels,
+         datasets: [
+           {
+             label: "Income",
+             data: data,
+             backgroundColor: [
+               "rgba(255, 99, 132, 0.2)",
+               "rgba(54, 162, 235, 0.2)",
+               "rgba(255, 206, 86, 0.2)",
+               "rgba(75, 192, 192, 0.2)",
+               "rgba(153, 102, 255, 0.2)",
+               "rgba(255, 159, 64, 0.2)",
+             ],
+             borderColor: [
+               "rgba(255, 99, 132, 1)",
+               "rgba(54, 162, 235, 1)",
+               "rgba(255, 206, 86, 1)",
+               "rgba(75, 192, 192, 1)",
+               "rgba(153, 102, 255, 1)",
+               "rgba(255, 159, 64, 1)",
+             ],
+             borderWidth: 1,
+           },
+         ],
+       },
+       options: {
+         title: {
+           display: true,
+           text: "Income Per Source",
+         },
+       },
+     });
+   };
+   
+   const getChartDataincomed = () => {
+     console.log("fetching");
+     fetch("/income_source_summary")
+       .then((res) => res.json())
+       .then((results) => {
+         console.log("results", results);
+         const source_data = results.income_source_data;
+         const [labels, data] = [
+           Object.keys(source_data),
+           Object.values(source_data),
+         ];
+   
+         renderChartincomed(data, labels);
+       });
+   };
+   
+   document.onload = getChartDataincomed();
+</script>
+
+{% endblock %}
+
+
+

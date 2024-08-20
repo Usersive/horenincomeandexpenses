@@ -1,0 +1,70 @@
+{% extends 'base.html'%}
+{% load static%}
+{% block content %}
+
+
+
+
+
+
+
+<div class="midde_cont">
+   <div class="container-fluid">
+      <div class="row column_title">
+         <div class="col-md-12">
+            <div class="page_title">
+               <h2 class="text-muted">CHOOSE CURRENCY</h2>
+            </div>
+         </div>
+      </div>
+      <div class="midde_cont">
+         <div class="container-fluid">
+            <div class="row column_title">
+               <div class="col-md-12">
+                     
+                  
+       <!-- row -->
+       <div class="row">
+          <!-- table section -->
+          <div class="col-md-12">
+             <div class="white_shd full margin_bottom_30">
+                <div class="full graph_head">
+
+            {%include 'includes/message.html'%}
+
+            <form action="{%url 'preferences'%}" method="POST">
+                {% csrf_token %}
+                <div class="input-group">
+                    <select class="custom-select" name="currency" id="inputGroupSelect04">
+                        {%if user_preferences.currency%}
+
+                        <option name="currency" selected value="{{user_preferences.currency}}">{{user_preferences.currency}}</option>
+                        
+                        {%endif%}
+                        
+
+                        {%for currency in currencies %}
+
+                        <option name="currency" value="{{currency.name}} - {{currency.value}}">{{currency.name}} - {{currency.value}}</option>
+                        
+                        {%endfor%}
+                    </select>
+                    <div class="input-group-append">
+                        <input class="btn btn-outline-secondary" type="submit" value="Save">
+                    </div>
+                </div>
+            </form>
+             </div>
+          </div>
+       </div>
+    </div>
+
+         </div>
+         </div>
+      </div>
+   </div>
+</div>
+</div>
+
+{% endblock %}
+

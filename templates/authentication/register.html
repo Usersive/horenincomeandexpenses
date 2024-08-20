@@ -1,0 +1,297 @@
+
+
+{% extends 'base_auth.html'%}
+{% comment %} {% extends 'base_auth.html'%}
+{%load static%}
+{% block content %}
+
+
+      <div id="app">
+        <div class="container">
+          <div class="center verticle_center full_height">
+             <div class="login_section">
+                <div class="logo_login">
+                   <div class="center">
+                    <h3 style="color:white;">Register</h3>
+                   </div>
+                   {%include 'includes/message.html'%}
+                </div>
+                <div class="login_form">
+                    {%include 'includes/message.html'%}
+                    <form action="{%url 'register' %}" method="post">
+                        {% csrf_token %}
+                        {%include 'includes/message.html'%}
+                      <fieldset>
+                         <div class="field">
+                            <label class="label_field">Username</label>
+                            <input type="text" value="{{fieldValue.username}}" name="username" class="form-control form-control-sm" id="usernameField" placeholder="Username" required>
+                            <div class="invalid_feedback invalid-feedback" id="invalid-feedback" style="display: none;"></div>
+                            <p class="text-sm text-success usernameSuccessOutput" id ="usernameSuccessOutput"></p>
+                         </div>
+
+                         <div class="field">
+                            <label class="label_field">Email</label>
+                            <input type="email" value="{{fieldValue.email}}" name="email" class="form-control form-control-sm" id="emailField" placeholder="Email">
+                            <div class="emailFeedBackArea invalid-feedback" id="emailFeedBackArea" style="display: none;"></div>
+                        </div>
+                         
+                         
+                         <div class="field">
+                            <label class="label_field">Password</label>
+                            <input type="password" name="password" class="form-control form-control-sm" id="passwordField" placeholder="Password" required>
+                           <br> 
+                        </div>
+                        <div class="field">
+                            <label class="label_field hidden">hidden label</label>
+                            <label class="form-check-label">Already have  account? <a href="{%url 'login'%}"> Login</label>                     
+                            <a class="forgot" href="{%url 'reset_password'%}">Forgotten Password?</a>
+                         </div>
+                     
+                         <div class="field margin_0">
+                            <button class="main_bt" type="submit">Register</button>
+                             </div>
+
+                      </fieldset>
+                   </form>
+  
+                </div>
+             </div>
+          </div>
+       </div> 
+
+       
+<script src="{% static 'js/register.js' %}"></script>
+
+
+
+
+
+
+
+<script src="{% static 'js/register.js' %}"></script>
+
+<script>
+    const usernameField = document.querySelector('#usernameField');
+    const feedBackArea = document.querySelector('#invalid-feedback');
+    const emailField = document.querySelector('#emailField');
+    const emailFeedBackArea = document.querySelector('#emailFeedBackArea');
+    const usernameSuccessOutput = document.querySelector('#usernameSuccessOutput');
+    const showPasswordToggle = document.querySelector('#showPasswordToggle');
+    const passwordField = document.querySelector('#passwordField');
+    const submitBtn = document.querySelector('.submit-btn');
+
+
+    const handleToggleInput=(e)=>{
+        if (showPasswordToggle.textContent==='SHOW'){
+            showPasswordToggle.textContent='HIDE';
+            passwordField.setAttribute('type', 'text');
+
+        }else{
+            showPasswordToggle.textContent='SHOW';
+            passwordField.setAttribute('type', 'password');
+        }
+
+    };
+
+    showPasswordToggle.addEventListener('click', handleToggleInput);
+
+
+    emailField.addEventListener("keyup", (e) => {
+        const emailVal = e.target.value;
+    
+        emailField.classList.remove("is-invalid");
+        emailFeedBackArea.style.display = "none";
+    
+        if (emailVal.length > 0) {
+            fetch("/authentication/validate-email", {
+                body: JSON.stringify({email: emailVal}),
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log("data", data);
+                if (data.email_error) {
+                    submitBtn.disabled =true;
+                    emailField.classList.add("is-invalid");
+                    emailFeedBackArea.style.display = "block";
+                    emailFeedBackArea.innerHTML = `<p>${data.email_error}</p>`;
+                }else{
+                    submitBtn.removeAttribute("disabled");
+                }
+            });
+        }
+
+    });
+    
+    usernameField.addEventListener("keyup", (e) => {
+
+        const usernameVal = e.target.value;
+
+        usernameSuccessOutput.style.display ="block";
+        usernameSuccessOutput.textContent = 'Checking ${usernameVal}';
+    
+        usernameField.classList.remove("is-invalid");
+        feedBackArea.style.display = "none";
+    
+        if (usernameVal.length > 0) {
+            fetch("/authentication/validate-username", {
+                body: JSON.stringify({username: usernameVal}),
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                
+                usernameSuccessOutput.style.display ="none";
+                if (data.username_error) {
+                    usernameField.classList.add("is-invalid");
+                    feedBackArea.style.display = "block";
+                    feedBackArea.innerHTML = `<p>${data.username_error}</p>`;
+                    submitBtn.disabled=true;
+                }else{
+                    submitBtn.removeAttribute("disabled");
+                }
+            });
+        }
+    
+    });
+ 
+
+</script>
+
+{%endblock%} {% endcomment %}
+
+
+
+
+
+{% load static %}
+{% block content %}
+
+<div id="app">
+    <div class="container">
+        <div class="center verticle_center full_height">
+            <div class="login_section">
+                <div class="logo_login">
+                    <div class="center">
+                        <h3 style="color:white;">Register</h3>
+                    </div>
+                </div>
+                <div class="login_form">
+                    {% include 'includes/message.html' %}
+                    <form action="{% url 'register' %}" method="post">
+                        {% csrf_token %}
+                        <fieldset>
+                            <div class="field">
+                                <label class="label_field">Username</label>
+                                <input type="text" value="{{ fieldValue.username }}" name="username" class="form-control form-control-sm" id="usernameField" placeholder="Username" required>
+                                <div class="invalid_feedback invalid-feedback" id="usernameFeedback" style="display: none;"></div>
+                                <p class="text-sm text-success float-center" id="usernameSuccessOutput"></p>
+                            </div>
+
+                            <div class="field">
+                                <label class="label_field">Email</label>
+                                <input type="email" value="{{ fieldValue.email }}" name="email" class="form-control form-control-sm" id="emailField" placeholder="Email" required>
+                                <div class="invalid_feedback invalid-feedback" id="emailFeedback" style="display: none;"></div>
+                            </div>
+
+                            <div class="field">
+                                <label class="label_field">Password</label>
+                                <input type="password" name="password" class="form-control form-control-sm" id="passwordField" placeholder="Password" required>
+                            </div>
+
+                            <div class="field">
+                                <label class="label_field hidden">hidden label</label>
+                                <label class="form-check-label">Already have an account? <a href="{% url 'login' %}"> Login</a></label>
+                                <a class="forgot" href="{% url 'reset_password' %}">Forgotten Password?</a>
+                            </div>
+
+                            <div class="field margin_0">
+                                <button class="main_bt" type="submit" id="submitBtn">Register</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/register.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const usernameField = document.querySelector('#usernameField');
+        const usernameFeedback = document.querySelector('#usernameFeedback');
+        const emailField = document.querySelector('#emailField');
+        const emailFeedback = document.querySelector('#emailFeedback');
+        const usernameSuccessOutput = document.querySelector('#usernameSuccessOutput');
+        const submitBtn = document.querySelector('#submitBtn');
+
+        usernameField.addEventListener("keyup", (e) => {
+            const usernameVal = e.target.value;
+            usernameSuccessOutput.style.display = "block";
+            usernameSuccessOutput.textContent = `Checking ${usernameVal}`;
+
+            usernameFeedback.style.display = "none";
+
+            if (usernameVal.length > 0) {
+                fetch("/validate-username", {
+                    body: JSON.stringify({ username: usernameVal }),
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    usernameSuccessOutput.style.display = "none";
+                    if (data.username_error) {
+                        usernameField.classList.add("is-invalid");
+                        usernameFeedback.style.display = "block";
+                        usernameFeedback.innerHTML = `<p>${data.username_error}</p>`;
+                        submitBtn.disabled = true;
+                    } else {
+                        usernameField.classList.remove("is-invalid");
+                        usernameFeedback.style.display = "none";
+                        submitBtn.disabled = false;
+                    }
+                });
+            }
+        });
+
+        emailField.addEventListener("keyup", (e) => {
+            const emailVal = e.target.value;
+
+            emailFeedback.style.display = "none";
+
+            if (emailVal.length > 0) {
+                fetch("/validate-email", {
+                    body: JSON.stringify({ email: emailVal }),
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.email_error) {
+                        emailField.classList.add("is-invalid");
+                        emailFeedback.style.display = "block";
+                        emailFeedback.innerHTML = `<p>${data.email_error}</p>`;
+                        submitBtn.disabled = true;
+                    } else {
+                        emailField.classList.remove("is-invalid");
+                        emailFeedback.style.display = "none";
+                        submitBtn.disabled = false;
+                    }
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

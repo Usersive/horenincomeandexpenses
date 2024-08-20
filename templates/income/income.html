@@ -1,0 +1,185 @@
+
+{% extends 'base.html'%}
+{% load static%}
+{% block content %}
+
+
+<div class="midde_cont">
+  <div class="container-fluid">
+     <div class="row column_title">
+        <div class="col-md-12">
+           <div class="page_title">
+              
+           
+           <div class="row">
+            <div class="col-6">
+              <h2 class="text-muted">INCOME</h2>
+            </div>
+
+            <div class="col-2">
+              <a href="{%url 'export_income_excel'%}" class="btn  btn-compose">Export Excel</a>
+            </div>
+            <div class="col-2">
+              <a href="{%url 'export_income_csv'%}" class="btn btn-compose ">Export CSV</a>
+            </div>
+            <div class="col-2">
+              <a href="{%url 'export_income_pdf'%}" class="btn btn-compose">Export PDF</a>
+            </div>
+          </div>
+        </div>
+           {% include 'includes/message.html' %}
+        </div>
+        
+     </div>
+    </div>
+       <div class="container">
+         <div class="row">
+           <div class="col-7">
+             <nav aria-label="breadcrumb">
+               <ol class="breadcrumb">
+                 <li class="breadcrumb-item"><a href="#">Income</a></li>
+                 <li class="breadcrumb-item active" aria-current="page">My Income</li>
+               </ol>
+             </nav>
+           </div>
+           <div class="col-3">
+            <div class="form-group">
+              <input type="text" class="form-control float-left" id="searchField" placeholder="Search">
+            </div>
+           </div>
+           <div class="col-2">
+            <a href="{% url 'add_income' %}" class="btn btn-primary float-right">Add Income</a>
+          </div>
+         </div>
+        </div>
+      </div>
+      <div class="container">
+          
+       
+           <div class="app-table" id="appTable">
+             <table class="table table-stripped table-hover">
+               <thead class="bg-success" style="color: #ffff;">
+                 <tr>
+                   <th>AMOUNT ({{ currency }})</th>
+                   <th>SOURCE</th>
+                   <th>DESCRIPTION</th>
+                   <th>DATE</th>
+                   <th></th>
+                 </tr>
+               </thead>
+               <tbody>
+                 {% for income in page_obj %}
+                 <tr>
+                   <td>{{ income.amount }}</td>
+                   <td>{{ income.source }}</td>
+                   <td>{{ income.description }}</td>
+                   <td>{{ income.date }}</td>
+                   <td><a href="{% url 'income_edit' income.id %}" class="btn btn-primary">Edit</a></td>
+                 </tr>
+                 {% endfor %}
+               </tbody>
+             </table>
+           </div>
+       
+
+           
+           <p id="noResults" style="display: none;">No results</p>
+           <div id="tableOutput" style="display: none;">
+             <table class="table table-stripped table-hover">
+               <thead class="bg-success" style="color: #ffff;">
+                 <tr>
+                   <th>AMOUNT ({{ currency }})</th>
+                   <th>SOURCE</th>
+                   <th>DESCRIPTION</th>
+                   <th>DATE</th>
+                   <th></th>
+                 </tr>
+               </thead>
+               <tbody id="tableBody">
+               </tbody>
+             </table>
+           </div>
+       
+           <div class="pagination-container" id="paginationContainer">
+             <div>
+               Showing page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+             </div>
+             <ul class="pagination align-right float-right mr-auto">
+               {% if page_obj.has_previous %}
+               <li {% if page_obj.number == 1 %} class="page-item active" {% endif %}><a class="page-link" href="?page=1">&laquo; 1</a></li>
+               <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+               {% endif %}
+               {% if page_obj.has_next %}
+               <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+               <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }} &raquo;</a></li>
+               {% endif %}
+             </ul>
+           </div>
+         </div>
+       </div>
+
+      </div>
+
+
+       
+       
+       <script>
+       document.addEventListener("DOMContentLoaded", function() {
+         const searchField = document.getElementById("searchField");
+         const tableOutput = document.getElementById("tableOutput");
+         const appTable = document.getElementById("appTable");
+         const paginationContainer = document.getElementById("paginationContainer");
+         const noResults = document.getElementById("noResults");
+         const tbody = document.getElementById("tableBody");
+       
+         if (searchField) {
+           searchField.addEventListener("keyup", (e) => {
+             const searchValue = e.target.value;
+       
+             if (searchValue.trim().length > 0) {
+               paginationContainer.style.display = "none";
+               tbody.innerHTML = "";
+               fetch("/search_income", {
+                 body: JSON.stringify({ searchText: searchValue }),
+                 method: "POST",
+                 headers: {
+                   'Content-Type': 'application/json'
+                 }
+               })
+               .then((res) => res.json())
+               .then((data) => {
+                 appTable.style.display = "none";
+                 tableOutput.style.display = "block";
+       
+                 if (data.length === 0) {
+                   noResults.style.display = "block";
+                   tableOutput.style.display = "none";
+                 } else {
+                   noResults.style.display = "none";
+                   data.forEach((item) => {
+                     tbody.innerHTML += `
+                       <tr>
+                         <td>${item.amount}</td>
+                         <td>${item.source}</td>
+                         <td>${item.description}</td>
+                         <td>${item.date}</td>
+                         <td> <a href="/income_edit/${item.id}" class="btn btn-primary">Edit</a></td>
+                       </tr>`;
+                   });
+                 }
+               })
+               .catch((error) => {
+                 console.error('Error fetching data:', error);
+               });
+             } else {
+               tableOutput.style.display = "none";
+               appTable.style.display = "block";
+               paginationContainer.style.display = "block";
+             }
+           });
+         }
+       });
+       </script>
+       
+       {% endblock %}
+       

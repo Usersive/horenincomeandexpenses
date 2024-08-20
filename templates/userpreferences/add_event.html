@@ -1,0 +1,312 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="midde_cont">
+   <div class="container-fluid">
+      <div class="row column_title">
+         <div class="col-md-12">
+            <div class="page_title">
+               <h2 class="text-muted">ADD EVENT</h2>
+            </div>
+         </div>
+      </div>
+      <div class="midde_cont">
+         <div class="container-fluid">
+            <div class="row column_title">
+               <div class="col-md-12">
+                  <div class="row column1">
+                     <div class="col-lg-6">
+                        <div class="white_shd full margin_bottom_30">
+                           <div class="full graph_head">
+                              <div class="heading1 margin_0">
+                                 <h2>Add Event</h2>
+                              </div>
+                              {% include 'includes/message.html' %}
+                           </div>
+                           <div class="" style="padding:30px;">
+                              <form method="post">
+                                 {% csrf_token %}
+                                 <div class="form-group">
+                                    <br>
+                                    <h4 class="text-muted">Title</h4>
+                                    <input type="text" class="form-control form-control-sm" name="name" value="" required>
+                                 </div>
+                                 <div class="form-group">
+                                    <h4 class="text-muted">Description</h4>
+                                    <textarea class="form-control" name="description" placeholder="Type your message" data-height="100" style="height: 100px;" required></textarea>
+                                 </div>
+                                 <div class="form-group">
+                                    <h4 class="text-muted">Event Date</h4>
+                                    <input type="date" class="form-control form-control-sm" name="event_date" value="" required>
+                                 </div>
+                                 <button type="submit" class="form form-control btn-compose">Save</button>
+                              </form>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-lg-6">
+                        <div class="white_shd full margin_bottom_30">
+                           <div class="calendar-container">
+                              <div class="calendar-header">
+                                 <button id="prev" class="nav-btn">&lt;</button>
+                                 <h2 id="monthYear"></h2>
+                                 <button id="next" class="nav-btn">&gt;</button>
+                              </div>
+                              <div class="calendar">
+                                 <div class="calendar-days">
+                                    <div>Sun</div>
+                                    <div>Mon</div>
+                                    <div>Tue</div>
+                                    <div>Wed</div>
+                                    <div>Thu</div>
+                                    <div>Fri</div>
+                                    <div>Sat</div>
+                                 </div>
+                                 <div id="calendarDates" class="calendar-dates"></div>
+                              </div>
+                           </div>
+                        </div>                
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <div class="midde_cont">
+         <div class="container-fluid">
+            <div class="row column_title">
+               <div class="col-md-12">
+                  <div class="row column1">
+
+                     <div class="col-lg-6">
+                        <div class="white_shd full margin_bottom_30">
+                           <div class="full graph_head">
+                              <div class="heading1 margin_0">
+                                 <h2>Notifications</h2><br>
+                              </div>
+                           </div>
+                           <div class="msg_list_main">
+                              <div class="row">
+                                 <ul class="msg_list">
+                                    {% for event in page_obj %}
+                                    <li>
+                                       <div class="col-9 float-left">
+                                          <span class="name_user py-2 text-muted">{{ event.name }}</span><br>
+                                          <span class="msg_user">{{ event.description }}</span>
+                                       </div>
+                                       <div class="col-3 float-right">
+                                          <div class=" text-right py-2 {% if event.event_date == today %}  {% endif %}">
+                                             {{ event.event_date }}
+                                          </div> 
+                                          <br>
+                                          <a href="{% url 'event_delete' event.id %}" class="btn btn-danger float-right pt-2">Delete</a>
+                                       </div>
+                                    </li>
+                                    {% endfor %}
+                                 </ul>
+                              </div>
+                           </div>
+                        <div class="pagination-container" id="paginationContainer">
+                           {% comment %} <div> {% endcomment %}
+                           <span style="padding:10px 20px;">Showing page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                           <ul class="pagination align-right float-right mr-auto">
+                              {% if page_obj.has_previous %}
+                              <li {% if page_obj.number == 1 %} class="page-item active" {% endif %}>
+                                 <a class="page-link" href="?page=1">&laquo; 1</a>
+                              </li>
+                              <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                              {% endif %}
+                              {% if page_obj.has_next %}
+                              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                              <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }} &raquo;</a></li>
+                              {% endif %}
+                           </ul>
+                        </div>
+                     </div>
+
+                     
+                  </div>
+               </div>
+               </div>
+
+
+   </div>
+</div>
+
+<!-- CSS for blinking effect with filled rectangle -->
+<style>
+   .today {
+      background-color: #007bff;  /* Background color for today */
+      color: white;               /* Text color for today */
+      font-weight: bold;          /* Bold text for today */
+      animation: blinker 1.5s linear infinite;  /* Blinking effect */
+  }
+
+  .tooltip-day {
+      background-color: #e0f7fa;  /* Background color for other days with events */
+      color: black;               /* Text color for other days */
+  }
+
+  .tooltip-day.today {
+      background-color: #ffeb3b;  /* Distinct background color for today */
+      color: black;               /* Text color for today */
+  }
+
+  /* Blinking keyframes */
+  @keyframes blinker {
+      0% { background-color: #007bff; }
+      50% { background-color: #ffeb3b; }
+      100% { background-color: #007bff; }
+  }
+
+  .calendar-dates div:hover {
+      background-color: #e0e0e0;  /* Hover effect */
+  }
+
+    .blink {
+        animation: blinker 1.5s linear infinite;
+        padding: 5px;
+        background-color: transparent;
+        color: #000;
+    }
+
+    @keyframes blinker {
+        0% { color: red; border-color: red; background-color: rgba(255, 0, 0, 0.3); }
+        33% { color: green; border-color: green; background-color: rgba(0, 128, 0, 0.3); }
+        66% { color: blue; border-color: blue; background-color: rgba(0, 0, 255, 0.3); }
+        100% { color: red; border-color: red; background-color: rgba(255, 0, 0, 0.3); }
+    }
+
+    .calendar-container {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        width: 100%;
+    }
+    
+    .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        background-color: #007bff;
+        color: white;
+    }
+    
+    .calendar-header h2 {
+        margin: 0;
+    }
+    
+    .nav-btn {
+        background-color: transparent;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+    }
+    
+    .calendar-days {
+        display: flex;
+        background-color: #007bff;
+        color: white;
+        padding: 10px 0;
+        font-weight: bold;
+    }
+    
+    .calendar-days div {
+        flex: 1;
+        text-align: center;
+    }
+    
+    .calendar-dates {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+        padding: 15px;
+    }
+    
+    .calendar-dates div {
+        text-align: center;
+        padding: 10px 0;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    
+    .calendar-dates div:hover {
+        background-color: #e0e0e0;
+    }
+    
+    .calendar-dates .today {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+    }
+</style>
+
+<script>
+   document.addEventListener('DOMContentLoaded', function() {
+       const monthYearEl = document.getElementById('monthYear');
+       const calendarDatesEl = document.getElementById('calendarDates');
+       const prevBtn = document.getElementById('prev');
+       const nextBtn = document.getElementById('next');
+
+       // Get event data from the Django context
+       const eventData = {{ event_data|safe }};
+
+       let currentDate = new Date();
+
+       function renderCalendar() {
+           calendarDatesEl.innerHTML = '';
+           const month = currentDate.getMonth();
+           const year = currentDate.getFullYear();
+
+           const firstDayOfMonth = new Date(year, month, 1).getDay();
+           const lastDateOfMonth = new Date(year, month + 1, 0).getDate();
+
+           monthYearEl.innerText = currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+           for (let i = 0; i < firstDayOfMonth; i++) {
+               const emptyCell = document.createElement('div');
+               calendarDatesEl.appendChild(emptyCell);
+           }
+
+           for (let i = 1; i <= lastDateOfMonth; i++) {
+               const dateEl = document.createElement('div');
+               dateEl.innerText = i;
+
+               const dateStr = `${year}-${(month + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
+
+               if (dateStr in eventData) {
+                   const descriptions = eventData[dateStr].join(', ');
+                   dateEl.setAttribute('title', descriptions);
+                   dateEl.classList.add('tooltip-day');
+               }
+
+               if (i === currentDate.getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) {
+                   dateEl.classList.add('today');
+               }
+
+               calendarDatesEl.appendChild(dateEl);
+           }
+       }
+
+       prevBtn.addEventListener('click', function() {
+           currentDate.setMonth(currentDate.getMonth() - 1);
+           renderCalendar();
+       });
+
+       nextBtn.addEventListener('click', function() {
+           currentDate.setMonth(currentDate.getMonth() + 1);
+           renderCalendar();
+       });
+
+       renderCalendar();
+   });
+</script>
+
+
+
+{% endblock %}
