@@ -1,53 +1,53 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html'%}
+{% load static%}
 {% block content %}
 
 <div class="midde_cont">
   <div class="container-fluid">
-    <!-- Page Title and Export Buttons -->
     <div class="row column_title">
       <div class="col-md-12">
         <div class="page_title">
           <div class="row">
-            <div class="col-6">
+            <div class="col-12 col-md-6">
               <h2 class="text-muted">INCOME</h2>
             </div>
-            <div class="col-2">
-              <a href="{% url 'export_income_excel' %}" class="btn btn-compose"><i class="fa fa-file-excel-o"></i> To Excel</a>
+
+            <div class="col-4 col-md-2">
+              <a href="{% url 'export_income_excel' %}" class="btn btn-compose btn-block"><i class="fa fa-file-excel-o"></i> To Excel</a>
             </div>
-            <div class="col-2">
-              <a href="{% url 'export_income_csv' %}" class="btn btn-compose"><i class="fa fa-file-text"></i> To CSV</a>
+            <div class="col-4 col-md-2">
+              <a href="{% url 'export_income_csv' %}" class="btn btn-compose btn-block"><i class="fa fa-file-text"></i> To CSV</a>
             </div>
-            <div class="col-2">
-              <a href="{% url 'export_income_pdf' %}" class="btn btn-compose"><i class="fa fa-file-pdf-o"></i> To PDF</a>
+            <div class="col-4 col-md-2">
+              <a href="{% url 'export_income_pdf' %}" class="btn btn-compose btn-block"><i class="fa fa-file-pdf-o"></i> To PDF</a>
             </div>
           </div>
         </div>
         {% include 'includes/message.html' %}
       </div>
     </div>
+  </div>
 
-    <!-- Breadcrumb and Search/Add Buttons -->
-    <div class="container">
-      <div class="row">
-        <div class="col-7">
-          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="#">Income</a></li>
-              <li class="breadcrumb-item active" aria-current="page">My Income</li>
-            </ol>
-          </nav>
-        </div>
-        <div class="col-3">
-          <div class="form-group">
-            <input type="text" class="form-control float-left" id="searchField" placeholder="Search">
-          </div>
-        </div>
-        <div class="col-2">
-          <a href="{% url 'add_income' %}" class="btn btn-primary float-right">Add Income</a>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-7">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Income</a></li>
+            <li class="breadcrumb-item active" aria-current="page">My Income</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="col-12 col-md-3 mt-2 mt-md-0">
+        <div class="form-group">
+          <input type="text" class="form-control" id="searchField" placeholder="Search">
         </div>
       </div>
+      <div class="col-12 col-md-2 mt-2 mt-md-0">
+        <a href="{% url 'add_income' %}" class="btn btn-primary btn-block">Add Income</a>
+      </div>
     </div>
+  </div>
 
     <!-- Responsive Table -->
     <div class="container">
@@ -97,36 +97,26 @@
         </table>
       </div>
 
-      <!-- Pagination -->
-      <div class="pagination-container">
-        <div>
-          Showing page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-        </div>
-        <ul class="pagination justify-content-center">
-          {% if page_obj.has_previous %}
-          <li class="page-item">
-            <a class="page-link" href="?page=1">&laquo; 1</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-          </li>
-          {% endif %}
-          {% if page_obj.has_next %}
-          <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }} &raquo;</a>
-          </li>
-          {% endif %}
-        </ul>
+
+    <div class="pagination-container" id="paginationContainer">
+      <div>
+        Showing page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
       </div>
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li {% if page_obj.number == 1 %} class="page-item active" {% endif %}>
+          <a class="page-link" href="?page=1">&laquo; 1</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+        {% endif %}
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }} &raquo;</a></li>
+        {% endif %}
+      </ul>
     </div>
   </div>
 </div>
-
-
-
 
 
 
