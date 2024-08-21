@@ -17,13 +17,13 @@
             </div>
 
             <div class="col-2">
-              <a href="{%url 'export_excel'%}" class="btn  btn-compose">Export Excel</a>
+              <a href="{%url 'export_excel'%}" class="btn  btn-compose"><i class="fa fa-file-excel-o"></i> Export Excel</a>
             </div>
             <div class="col-2">
-              <a href="{%url 'export_csv'%}" class="btn btn-compose ">Export CSV</a>
+              <a href="{%url 'export_csv'%}" class="btn btn-compose "><i class="fa fa-file-text"></i> Export CSV</a>
             </div>
             <div class="col-2">
-              <a href="{%url 'export_pdf'%}" class="btn btn-compose">Export PDF</a>
+              <a href="{%url 'export_pdf'%}" class="btn btn-compose"><i class="fa fa-file-pdf-o"></i> Export PDF</a>
             </div>
           </div>
         </div>
@@ -73,7 +73,7 @@
                    <td>{{ expense.category }}</td>
                    <td>{{ expense.description }}</td>
                    <td>{{ expense.date }}</td>
-                   <td><a href="{% url 'expenses_edit' expense.id %}" class="btn btn-primary">Edit</a></td>
+                   <td><a href="{% url 'expenses_edit' expense.id %}" class="btn btn-primary"><i class="fa fa-edit"></i> Edit</a></td>
                  </tr>
                  {% endfor %}
                </tbody>

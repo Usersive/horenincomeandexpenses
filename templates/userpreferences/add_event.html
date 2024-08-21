@@ -39,7 +39,7 @@
                                     <h4 class="text-muted">Event Date</h4>
                                     <input type="date" class="form-control form-control-sm" name="event_date" value="" required>
                                  </div>
-                                 <button type="submit" class="form form-control btn-compose">Save</button>
+                                 <button type="submit" class="form form-control btn-compose"><i class="fa fa-save"></i> Save</button>
                               </form>
                            </div>
                         </div>
@@ -100,7 +100,7 @@
                                              {{ event.event_date }}
                                           </div> 
                                           <br>
-                                          <a href="{% url 'event_delete' event.id %}" class="btn btn-danger float-right pt-2">Delete</a>
+                                          <a href="{% url 'event_delete' event.id %}" class="btn btn-danger float-right pt-2"><i class="fa fa-trash-o"></i> Delete</a>
                                        </div>
                                     </li>
                                     {% endfor %}

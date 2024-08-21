@@ -15,7 +15,6 @@ import cloudinary.uploader
 @login_required(login_url='/login')
 def index(request): 
     user = request.user
-    # profile = user.profile
     barcode_io = BytesIO()
     barcode =Code128(user.username, writer=ImageWriter())
     barcode.default_writer_options['write_text'] =False
@@ -27,7 +26,6 @@ def index(request):
     about_us = About.objects.all()
     context={
         'about_company': about_us,
-        # 'profile':profile,
         'barcode_url': default_storage.url(barcode_path),
     }  
     return render (request, 'index.html', context)

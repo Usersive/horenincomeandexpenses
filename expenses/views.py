@@ -160,8 +160,8 @@ def expense_category_summary(request):
     return JsonResponse({'expense_category_data': finalrep}, safe=False)
 
 @login_required(login_url='/login')
-def stats_view(request):
-    return render(request, 'expenses/stats.html')
+def expenses_stats_view(request):
+    return render(request, 'expenses/expenses_stats.html')
 
 
 @login_required(login_url='/login')

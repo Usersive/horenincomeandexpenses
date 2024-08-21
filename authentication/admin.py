@@ -13,6 +13,10 @@ class ProfileAdmin(admin.ModelAdmin):
     ordering=('-date',)
     list_per_page= 20
     
+class AboutAdmin(admin.ModelAdmin):
+    list_display =['about_us',]
+    list_display_links=['about_us']
+    
 admin.site.register(Profile, ProfileAdmin)
-admin.site.register(About)
+admin.site.register(About, AboutAdmin)
 
