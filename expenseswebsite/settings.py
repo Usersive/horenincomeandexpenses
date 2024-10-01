@@ -93,60 +93,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'expenseswebsite.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE'    : 'django.db.backends.postgresql_psycopg2',
-#          'NAME'     : config('DB_NAME'),
-#          'USER'     : config('DB_USER'),
-#          'PASSWORD' : config('DB_PASSWORD'),
-#          'PORT'     : config('DB_PORT'),
-#          'HOST'     : config('DB_HOST'),        
-#     }
-# # }
-
-# if not DEBUG:
-#     DATABASES = {
-#     'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
-# }   
-# else:
-
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.sqlite3',
-#             'NAME': BASE_DIR / 'db.sqlite3',
-#         }
-#     }
-
-
-
-    
-# # POSTGRES DATABASE SETUP ON RENDER.COM   
-# DATABASES = {
-#     # 'ENGINE'    : 'django.db.backends.postgresql_psycopg2',
-#     'default': dj_database_url.parse(env('DATABASE_URL'))
-# }
-
-# Replace the SQLite DATABASES configuration with PostgreSQL:
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         # Replace this value with your local database's connection string.
-#         default='postgresql://horenincome_user:e8fSzEhuY7x5FpPIIUmS6R5FJpzcPr9G@dpg-cr2qrh3v2p9s739c1qmg-a.oregon-postgres.render.com/horenincome',
-#         conn_max_age=600
-#     )
-# }
-
-
-
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
