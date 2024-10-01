@@ -112,29 +112,29 @@ WSGI_APPLICATION = 'expenseswebsite.wsgi.application'
 #          'PORT'     : config('DB_PORT'),
 #          'HOST'     : config('DB_HOST'),        
 #     }
-# }
+# # }
 
-if not DEBUG:
-    DATABASES = {
-    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
-}   
-else:
+# if not DEBUG:
+#     DATABASES = {
+#     'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+# }   
+# else:
 
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': BASE_DIR / 'db.sqlite3',
+#         }
+#     }
 
 
 
     
-# POSTGRES DATABASE SETUP ON RENDER.COM   
-DATABASES = {
-    # 'ENGINE'    : 'django.db.backends.postgresql_psycopg2',
-    'default': dj_database_url.parse(env('DATABASE_URL'))
-}
+# # POSTGRES DATABASE SETUP ON RENDER.COM   
+# DATABASES = {
+#     # 'ENGINE'    : 'django.db.backends.postgresql_psycopg2',
+#     'default': dj_database_url.parse(env('DATABASE_URL'))
+# }
 
 # Replace the SQLite DATABASES configuration with PostgreSQL:
 # DATABASES = {
@@ -239,3 +239,16 @@ DEFAULT_FILE_STORAGE ='cloudinary_storage.storage.RawMediaCloudinaryStorage'
 
 # #Load barcode user image from cloudinary
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DATABASE_NAME'), 
+        'USER': config('USER'),  
+        'PASSWORD': config('PASSWORD'),  
+        'HOST': config('HOST'),  
+        'PORT': config('PORT', "8000"),  
+    }
+}
